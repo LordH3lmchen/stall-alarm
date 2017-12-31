@@ -118,6 +118,9 @@ Script und config sind in getrennten Modulen.
 3. stall_alarm_config anpassen (Telefonnummer eintragen ... )
 4. Reboot und prüfen ob alles läuft. (Relais schalten z.B.)
 
+## Testen
+Bevor man so etwas Produktiv laufen lässt ein paar Tage testen. Also eine Nachricht täglich senden. Wenn alles stabil läuft trotzdem einmal wöchentlich einen Probealarm (wie auch bei der Feuerwehr)
+
 ## Manuell Test-Nachrichten senden
 
 Ich empfehle **bpython** als interaktiven interpreter **python3** einfach zu starten geht natürlich auch.
