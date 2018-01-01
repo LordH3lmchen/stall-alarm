@@ -1,6 +1,6 @@
 # RaspberryPi als Alarmanlage
 
-Die Alarmanlage basiert auf einem Raspberry Pi der einen Alarmkontakt.
+Die Alarmanlage basiert auf einem Raspberry Pi der einen GPIO Pin als Alarmkontakt verwendet.
 
 Die Gesamtkosten dieser Alarmanlage sind sehr überschaubar.
 
@@ -19,7 +19,7 @@ Gesamt sollte das Projekt mit ca 150€ realisierbar sein.
 
 Installiert wird am besten Raspbian(Lite) ohne GUI/Desktop
 
-Benötigt für das Skript werden
+Benötigt für das Skript werden folgende Debian Packages
  - python3
  - python3-pip
  - python3-gpiozero
@@ -43,7 +43,7 @@ ist sofort als Modem verfügbar. Das ist aber von Provider und Model abhängig.
 ### Statische Hardwarenamen
 Es kann passieren dass das Modem die Verbindung verliert und neue Namen bekommt.
 Spannungsschwankungen, Versehentliches rausziehen des Modems ... . Um das zu
-verhindern kann man dem USB Device einen defnierten Namen geben (Symlinks mit
+verhindern kann man dem USB Device einen definierten Namen geben (Symlinks mit
 udev)
 
 ```
@@ -54,7 +54,7 @@ Bus 001 Device 002: ID 0424:9514 Standard Microsystems Corp. SMC9514 Hub
 Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
 ```
 
-Folgende UDEV Regeln lösen das Problem
+Folgende udev-Regeln lösen das Problem
 ```
 
 pi@mobilstall /e/u/rules.d> cat 98-huwei-gsm.rules
@@ -66,7 +66,7 @@ SUBSYSTEMS=="usb", ATTRS{modalias}=="usb:v12D1p1001*", KERNEL=="ttyUSB*", ATTRS{
 
 # Message Providers
 Das Alarm Script sendet "ALARM!" aus allen möglichen Kanälen
-SMS, (in Zukunft auch eMail, WhatsApp ...)
+SMS (in Zukunft auch eMail, WhatsApp ...).
 
 
 ## SMS mit Twilio (Internet)
@@ -79,7 +79,7 @@ Mit pip wird **twilio** installiert.
 sudo pip install twilio
 ```
 
-Account SID und auth_thoken in stall_alarm_config.py eintragen und es sollte
+Account SID und **auth_thoken** in **stall_alarm_config.py** eintragen und es sollte
 laufen.
 
 
@@ -93,7 +93,7 @@ Huawei e160 ... Siemens mc35i ... mc55 ...
 sudo apt-get install smstools
 ```
 
-smstools zu konfigurieren ist ziemlich simpel. **/etc/smsd.conf**
+**smstools** zu konfigurieren ist ziemlich simpel. **/etc/smsd.conf**
 
 ganz unten das Beispiel wie hier anpassen
 ```
@@ -106,7 +106,7 @@ baudrate = 115200
 ```
 
 und schon sendet der Huawei Stick SMS. Ich empfehle den PIN auf der SIM zu
-entfernen das macht bei manchen Sticks probleme.
+entfernen das macht bei manchen Sticks Probleme.
 
 Wichtig ist noch den user (hier pi) der Gruppe smsd hinzu zu fügen
 
@@ -114,7 +114,7 @@ Wichtig ist noch den user (hier pi) der Gruppe smsd hinzu zu fügen
 pi@stall ~> sudo usermod -a -G smsd pi
 ```
 
-Mit systemctl checken ob smstools korrekt läuft und startet.
+Mit **systemctl** checken ob **smstools** korrekt läuft und startet.
 ```
 pi@stall ~> sudo systemctl start smstools.service
 ```
@@ -127,7 +127,7 @@ Die Logs sind unter **/var/log/smstools/smsd.log**.
 
 ### Probleme mit zu langsamen Modem und zu schnellem Rechner
 Mein RaspberrPi 3 startet smstools zu schnell. Das Modem liefert SIM Busy und
-smstools startet nicht. Als abhilfe habe ich das **/etc/ini.d/smstools**
+smstools startet nicht. Als Abhilfe habe ich das **/etc/ini.d/smstools**
 geändert und ein **sleep 20** hinzugefügt um den Stick etwas mehr Zeit (20sec)
 zu geben um zu starten.
 
@@ -145,7 +145,7 @@ zu geben um zu starten.
 ```
 
 # Verbinden des Relais mit dem RaspberryPi
-Unsere Schaltschrank hat ein Relais verbaut das sich öffnet wenn.
+Unser Schaltschrank hat ein Relais verbaut das sich öffnet wenn.
 1. Der Strom ausfällt
 2. Ein Problem bei der Lüftung besteht (Motorschutz oder LS auslöst)
 
