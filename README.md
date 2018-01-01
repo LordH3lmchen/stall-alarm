@@ -1,6 +1,7 @@
 # RaspberryPi als Alarmanlage
 
-Die Alarmanlage basiert auf einem Raspberry Pi der einen GPIO Pin als Alarmkontakt verwendet.
+Die Alarmanlage basiert auf einem Raspberry Pi der einen GPIO Pin als
+Alarmkontakt verwendet.
 
 Die Gesamtkosten dieser Alarmanlage sind sehr überschaubar.
 
