@@ -19,7 +19,7 @@ def send_smstools_msg(message_text='ALARM @Stall (smstools)',
     """Send a short message via a local smstools service."""
     recipient = recipient.replace('+', '')
     msg_file_name = cfg.outgoing_directory + '/' +\
-        recipient + str(datetime.datetime.utcnow)
+        recipient + str(datetime.datetime.utcnow())
     with open(msg_file_name, 'w') as msg_file:
         print(str(datetime.datetime.utcnow()) +
               ' sending \'' + message_text +

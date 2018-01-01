@@ -160,12 +160,12 @@ nutzt. Das Skript kann einfach mit crontab gestartet werden.
 ## Installation
 Script und config sind in getrennten Modulen.
 
-1. **stall_alarm.py** und **stall_alarm_config.py** auf den Raspberry Pi
-    kopieren. (**scp**, **git clone**, **whatever**)
+1. **stall_alarm.py**, **stall_alarm_config.py** und **test_sms_hardware.py**
+    auf den Raspberry Pi kopieren. (**scp**, **git clone**, **whatever**)
 2. [crontab anpassen]('https://wiki.archlinux.org/index.php/Cron') um
     Probealarme und Alarme zu senden. Das Projekt enthält eine Beispiel
     **stall_alarm_crontab**.
-3. stall_alarm_config anpassen (Telefonnummer eintragen ... )
+3. stall_alarm_config anpassen (Telefonnummern eintragen ... )
 4. Reboot und prüfen ob alles läuft. (Relais schalten z.B.)
 
 ## Testen
