@@ -3,6 +3,10 @@
 Die Alarmanlage basiert auf einem Raspberry Pi der einen GPIO Pin als
 Alarmkontakt verwendet.
 
+![RaspberryPi und 3G USB Modem](/images/alarmanlage0.jpg)
+
+![RaspberryPi und 3G USB Modem](/images/alarmanlage1.jpg)
+
 Die Gesamtkosten dieser Alarmanlage sind sehr überschaubar.
 
  - RaspberryPi Zero W, rPi3 ... also zwischen 8-35€ je nach Model
@@ -24,45 +28,6 @@ Benötigt für das Skript werden folgende Debian Packages
  - python3
  - python3-pip
  - python3-gpiozero
-
-
-## USB 3G Modem Setup (Notwendig für SMS versand mit Wertkarte)
-Eine Internetverbindung muss natürlich nicht bestehen. Allerdings muss der
-Stick als Modem erkannt werden.
-
-Im Arch Wiki gibts einige Artikel dazu wie man diverse Sticks als Modem nutzt
- - https://wiki.archlinux.org/index.php/USB_3G_Modem
- - https://wiki.archlinux.org/index.php/udev#Setting_static_device_names
- - https://wiki.archlinux.org/index.php/Huawei_E1550_3G_modem
- - https://wiki.archlinux.org/index.php/Huawei_E220
-
-Ich besitze ein Huawei Mobile Connect, Model E160 von bob. Ein Modeswitch ist
-bei meinem Model scheinbar nicht notwendig. Es wird nie als USB Speicher erkannt
-ist sofort als Modem verfügbar. Das ist aber von Provider und Model abhängig.
-
-
-### Statische Hardwarenamen
-Es kann passieren dass das Modem die Verbindung verliert und neue Namen bekommt.
-Spannungsschwankungen, Versehentliches rausziehen des Modems ... . Um das zu
-verhindern kann man dem USB Device einen definierten Namen geben (Symlinks mit
-udev)
-
-```
-pi@mobilstall /e/u/rules.d> lsusb
-Bus 001 Device 007: ID 12d1:1001 Huawei Technologies Co., Ltd. E169/E620/E800 HSDPA Modem
-Bus 001 Device 003: ID 0424:ec00 Standard Microsystems Corp. SMSC9512/9514 Fast Ethernet Adapter
-Bus 001 Device 002: ID 0424:9514 Standard Microsystems Corp. SMC9514 Hub
-Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
-```
-
-Folgende udev-Regeln lösen das Problem
-```
-
-pi@mobilstall /e/u/rules.d> cat 98-huwei-gsm.rules
-SUBSYSTEMS=="usb", ATTRS{modalias}=="usb:v12D1p1001*", KERNEL=="ttyUSB*", ATTRS{bInterfaceNumber}=="00", ATTRS{bInterfaceProtocol}=="ff", SYMLINK+="ttyUSB_utps_modem"
-SUBSYSTEMS=="usb", ATTRS{modalias}=="usb:v12D1p1001*", KERNEL=="ttyUSB*", ATTRS{bInterfaceNumber}=="01", ATTRS{bInterfaceProtocol}=="ff", SYMLINK+="ttyUSB_utps_diag"
-SUBSYSTEMS=="usb", ATTRS{modalias}=="usb:v12D1p1001*", KERNEL=="ttyUSB*", ATTRS{bInterfaceNumber}=="02", ATTRS{bInterfaceProtocol}=="ff", SYMLINK+="ttyUSB_utps_pcui"
-```
 
 
 # Message Providers
@@ -125,6 +90,51 @@ https://wiki.archlinux.org/index.php/Systemd#Using_units
 
 Die Logs sind unter **/var/log/smstools/smsd.log**.
 
+## USB 3G Modem Setup (Notwendig für SMS versand mit Wertkarte)
+Eine Internetverbindung muss natürlich nicht bestehen. Allerdings muss der
+Stick als Modem erkannt werden.
+
+Im Arch Wiki gibts einige Artikel dazu wie man diverse Sticks als Modem nutzt
+ - https://wiki.archlinux.org/index.php/USB_3G_Modem
+ - https://wiki.archlinux.org/index.php/udev#Setting_static_device_names
+ - https://wiki.archlinux.org/index.php/Huawei_E1550_3G_modem
+ - https://wiki.archlinux.org/index.php/Huawei_E220
+
+Ich besitze ein Huawei Mobile Connect, Model E160 von bob. Ein Modeswitch ist
+bei meinem Model scheinbar nicht notwendig. Es wird nie als USB Speicher erkannt
+ist sofort als Modem verfügbar. Das ist aber von Provider und Model abhängig.
+
+
+### Statische Hardwarenamen
+Es kann passieren dass das Modem die Verbindung verliert und neue Namen bekommt.
+Spannungsschwankungen, Versehentliches rausziehen des Modems ... . Um das zu
+verhindern kann man dem USB Device einen definierten Namen geben (Symlinks mit
+udev)
+
+```
+pi@mobilstall /e/u/rules.d> lsusb
+Bus 001 Device 007: ID 12d1:1001 Huawei Technologies Co., Ltd. E169/E620/E800 HSDPA Modem
+Bus 001 Device 003: ID 0424:ec00 Standard Microsystems Corp. SMSC9512/9514 Fast Ethernet Adapter
+Bus 001 Device 002: ID 0424:9514 Standard Microsystems Corp. SMC9514 Hub
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+```
+
+Folgende udev-Regeln lösen das Problem
+```
+
+pi@mobilstall /e/u/rules.d> cat 98-huwei-gsm.rules
+SUBSYSTEMS=="usb", ATTRS{modalias}=="usb:v12D1p1001*", KERNEL=="ttyUSB*", ATTRS{bInterfaceNumber}=="00", ATTRS{bInterfaceProtocol}=="ff", SYMLINK+="ttyUSB_utps_modem"
+SUBSYSTEMS=="usb", ATTRS{modalias}=="usb:v12D1p1001*", KERNEL=="ttyUSB*", ATTRS{bInterfaceNumber}=="01", ATTRS{bInterfaceProtocol}=="ff", SYMLINK+="ttyUSB_utps_diag"
+SUBSYSTEMS=="usb", ATTRS{modalias}=="usb:v12D1p1001*", KERNEL=="ttyUSB*", ATTRS{bInterfaceNumber}=="02", ATTRS{bInterfaceProtocol}=="ff", SYMLINK+="ttyUSB_utps_pcui"
+```
+
+
+### Stromversorgung eines USB Modem
+3G Modems sind manchmal etwas zickig wenn die Stromversorgung nicht ausreicht.
+Man kann sich einen einfachen Adapter zusammenlöten der das 3G Modem und
+RaspberryPi direkt versorgt.
+
+![USB Adapter](/images/adapter.jpg)
 
 ### Probleme mit zu langsamen Modem und zu schnellem Rechner
 Mein RaspberrPi 3 startet smstools zu schnell. Das Modem liefert SIM Busy und
